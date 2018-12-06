@@ -58,7 +58,21 @@ export function parseEvent (ev) {
   return ev
 }
 
+export function getNoteOn (note, velocity) {
+  return parseEvent({
+    data: [0x90, note, velocity]
+  })
+}
+
+export function getNoteOff (note, velocity) {
+  return parseEvent({
+    data: [0x80, note, velocity]
+  })
+}
+
 export default {
   parseEvent,
-  ...status
+  ...status,
+  getNoteOff,
+  getNoteOn
 }

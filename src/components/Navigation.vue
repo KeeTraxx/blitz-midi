@@ -1,17 +1,37 @@
 <template>
   <div>
     <div class="navigation">
-      <router-link class="nav-item" v-for="route in $router.options.routes.filter(r => !r.position)" v-if="route.name" :key="route.name" tag="div" :to="route.path">
+      <div ref="marker" style="height: 5px; top: 59px" class="marker"></div>
+      <router-link :ref="route.name" class="nav-item" v-for="route in $router.options.routes.filter(r => !r.position)" v-if="route.name" :key="route.name" tag="div" :to="route.path">
         <img height="32" :src="`/static/icons/${route.name}.svg`"> {{route.name}}
       </router-link>
       <div class="filler"></div>
-      <router-link class="nav-item" v-for="route in $router.options.routes.filter(r => r.position === 'right')" v-if="route.name" :key="route.name" tag="div" :to="route.path">
+      <router-link :ref="route.name" class="nav-item" v-for="route in $router.options.routes.filter(r => r.position === 'right')" v-if="route.name" :key="route.name" tag="div" :to="route.path">
         <img height="32" :src="`/static/icons/${route.name}.svg`"> {{route.name}}
       </router-link>
     </div>
   </div>
 </template>
-
+<script>
+export default {
+  mounted () {
+    this.$router.afterEach(() => this.onRouteChange())
+    this.onRouteChange()
+  },
+  methods: {
+    onRouteChange () {
+      console.log(this.$router.currentRoute)
+      setTimeout(() => {
+        let el = this.$refs[this.$router.currentRoute.name][0].$el
+        let rect = el.getBoundingClientRect()
+        this.$refs.marker.style.left = rect.left + 'px'
+        this.$refs.marker.style.width = rect.width + 'px'
+        // this.$refs.marker.style.height = rect.height + 'px'
+      }, 10)
+    }
+  }
+}
+</script>
 <style scoped>
 .navigation {
   display: flex;
@@ -26,18 +46,6 @@
   align-items: center;
 }
 
-.nav-item.router-link-active {
-  font-weight: bold;
-  background-position: 0 0;
-}
-
-.nav-item {
-  transition: all 0.3s;
-  background-size: 200% 100%;
-  background-image: linear-gradient(to right, #ddd 50%, rgba(0,0,0,0) 50%);
-  background-position: -100% 0;
-}
-
 .nav-item {
   cursor: pointer;
 }
@@ -48,5 +56,14 @@
 
 .filler {
   flex-grow: 1;
+}
+
+.marker {
+  position: absolute;
+  transition: all 600ms;
+  background-color: pink;
+  z-index: -200;
+  padding: 0;
+  margin: 0;
 }
 </style>

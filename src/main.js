@@ -7,6 +7,7 @@ import router from './router'
 import MidiInput from './lib/MidiInput'
 
 import './assets/reset.css'
+import './assets/blitz-midi.scss'
 
 Vue.use(Vuex)
 
