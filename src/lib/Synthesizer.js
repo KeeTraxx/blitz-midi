@@ -13,7 +13,6 @@ export class Synthesizer {
   }
 
   noteOn (ev) {
-    console.log('synth', ev)
     const gainNode = Mixer.ctx.createGain()
     gainNode.gain.value = ev.meta.velocity * 0.5
     gainNode.connect(Mixer.master)

@@ -8,7 +8,6 @@ export class MidiInput {
   }
 
   async init () {
-    console.log('init...')
     this.midiAccess = await navigator.requestMIDIAccess({ sysex: false })
     this.midiAccess.onstatechange = (ev) => {
       this.updateInputs()
@@ -17,7 +16,6 @@ export class MidiInput {
   }
 
   updateInputs () {
-    console.log('INPUT')
     this.midiAccess.inputs.forEach(midiInput => {
       midiInput.onmidimessage = (ev) => {
         const midiEvent = MidiEvent.parseEvent(ev)

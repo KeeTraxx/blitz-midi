@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     onRouteChange () {
-      console.log(this.$router.currentRoute)
       setTimeout(() => {
         let el = this.$refs[this.$router.currentRoute.name][0].$el
         let rect = el.getBoundingClientRect()

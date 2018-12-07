@@ -40,6 +40,11 @@ export default {
     label: {
       required: true,
       type: String
+    },
+    round: {
+      required: false,
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -49,7 +54,7 @@ export default {
       .clamp(true)
 
     let rotation = d3.scaleLinear()
-      .domain([0, 100])
+      .domain([this.min, this.max])
       .range([-120, 120])
       .clamp(true)
 
@@ -59,18 +64,33 @@ export default {
       internalValue: scale.invert(this.value)
     }
   },
+  computed: {
+    displayValue () {
+      return this.round ? Math.round(this.scale(this.internalValue)) : this.scale(this.internalValue)
+    }
+  },
   mounted () {
     const element = d3.select(this.$refs.element)
     const knob = d3.select(this.$refs.knob)
-    knob.attr('transform', `rotate(${this.rotation(this.internalValue)})`)
+    knob.attr('transform', `rotate(${this.rotation(this.displayValue)})`)
 
-    element.call(d3.drag().on('drag', () => {
-      this.internalValue -= d3.event.dy
+    element.call(d3.drag().on('drag', this.move))
+
+    element.on('wheel', this.move)
+  },
+  methods: {
+    move () {
+      const knob = d3.select(this.$refs.knob)
+      let val = d3.event.dy || d3.event.deltaY * 3
+      if (val === undefined) {
+        return
+      }
+      this.internalValue -= val
       this.internalValue = Math.max(0, this.internalValue)
       this.internalValue = Math.min(100, this.internalValue)
-      knob.attr('transform', `rotate(${this.rotation(this.internalValue)})`)
-      this.$emit('input', this.scale(this.internalValue))
-    }))
+      knob.attr('transform', `rotate(${this.rotation(this.displayValue)})`)
+      this.$emit('input', this.displayValue)
+    }
   }
 }
 </script>

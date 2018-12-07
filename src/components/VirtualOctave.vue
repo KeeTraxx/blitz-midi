@@ -32,7 +32,6 @@ export default {
     MidiEventBus.$on(MidiEvent.NOTE_ON, ev => {
       let el = this.$refs[`note_${ev.data[1]}`]
       if (el) {
-        console.log(el)
         el.classList.add('active')
       }
     })
@@ -40,7 +39,6 @@ export default {
     MidiEventBus.$on(MidiEvent.NOTE_OFF, ev => {
       let el = this.$refs[`note_${ev.data[1]}`]
       if (el) {
-        console.log(el)
         el.classList.remove('active')
       }
     })
@@ -48,12 +46,10 @@ export default {
   methods: {
     noteOn (note) {
       let ev = MidiEvent.getNoteOn(this.octave * 12 + note, 100)
-      console.log(ev)
       MidiEventBus.$emit(ev.meta.event, ev)
     },
     noteOff (note) {
       let ev = MidiEvent.getNoteOff(this.octave * 12 + note, 100)
-      console.log(ev)
       MidiEventBus.$emit(ev.meta.event, ev)
     }
   }
