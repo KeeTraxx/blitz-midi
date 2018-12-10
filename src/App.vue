@@ -1,31 +1,26 @@
 <template>
   <div id="app">
-    <button v-if="!initialized" @click="powerOn()">On</button>
-    <div v-else>
-      <navigation />
-      <router-view />
-    </div>
+    <power-panel v-if="!powered" @powerOn="powered = true; $router.push('/keyboard')" />
+    <navigation />
+    <router-view v-show="powered" />
   </div>
 </template>
 
 <script>
-import Mixer from './lib/Mixer'
 import Navigation from './components/Navigation'
+import PowerPanel from './components/PowerPanel'
 export default {
-  name: 'App',
   data () {
     return {
-      initialized: false
+      powered: false
     }
+  },
+  mounted () {
+    console.log(this.$router)
   },
   components: {
-    Navigation
-  },
-  methods: {
-    powerOn () {
-      Mixer.powerOn()
-      this.initialized = true
-    }
+    Navigation,
+    PowerPanel
   }
 }
 </script>

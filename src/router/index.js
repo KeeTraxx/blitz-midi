@@ -30,6 +30,6 @@ export default new Router({
       component: MidiInputs,
       position: 'right'
     },
-    { path: '*', redirect: '/synth' }
+    { path: '*', redirect: '/mixer' }
   ]
 })

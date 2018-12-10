@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Mixer from '../lib/Mixer'
 import Knob from './Knob'
+import SoundSystem from '../lib/SoundSystem'
 
 export default {
   name: 'Mixer',
@@ -17,7 +17,7 @@ export default {
   },
   watch: {
     masterVolume () {
-      Mixer.master.gain.value = this.masterVolume
+      SoundSystem.master.gain.value = this.masterVolume
     }
   },
   components: {

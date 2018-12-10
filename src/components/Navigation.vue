@@ -2,11 +2,11 @@
   <div>
     <div class="navigation">
       <div ref="marker" style="height: 5px; top: 59px" class="marker"></div>
-      <router-link :ref="route.name" class="nav-item" v-for="route in $router.options.routes.filter(r => !r.position)" v-if="route.name" :key="route.name" tag="div" :to="route.path">
+      <router-link :ref="route.name" class="nav-item" v-for="route in routes.filter( r => r.position !== 'right')" v-if="route.name" :key="route.name" tag="div" :to="route.path">
         <img height="32" :src="`/static/icons/${route.name}.svg`"> {{route.name}}
       </router-link>
       <div class="filler"></div>
-      <router-link :ref="route.name" class="nav-item" v-for="route in $router.options.routes.filter(r => r.position === 'right')" v-if="route.name" :key="route.name" tag="div" :to="route.path">
+      <router-link :ref="route.name" class="nav-item" v-for="route in routes.filter(r => r.position === 'right')" v-if="route.name" :key="route.name" tag="div" :to="route.path">
         <img height="32" :src="`/static/icons/${route.name}.svg`"> {{route.name}}
       </router-link>
     </div>
@@ -18,15 +18,21 @@ export default {
     this.$router.afterEach(() => this.onRouteChange())
     this.onRouteChange()
   },
+  computed: {
+    routes () {
+      return this.$router.options.routes.filter(r => !r.hidden)
+    }
+  },
   methods: {
     onRouteChange () {
       setTimeout(() => {
+        console.log('route change')
         let el = this.$refs[this.$router.currentRoute.name][0].$el
         let rect = el.getBoundingClientRect()
         this.$refs.marker.style.left = rect.left + 'px'
         this.$refs.marker.style.width = rect.width + 'px'
         // this.$refs.marker.style.height = rect.height + 'px'
-      }, 10)
+      }, 1)
     }
   }
 }

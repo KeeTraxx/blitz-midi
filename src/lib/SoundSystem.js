@@ -1,4 +1,4 @@
-export class Mixer {
+export class SoundSystem {
   powerOn () {
     this.ctx = new AudioContext()
     this.master = this.ctx.createGain()
@@ -6,4 +6,4 @@ export class Mixer {
   }
 }
 
-export default new Mixer()
+export default new SoundSystem()
